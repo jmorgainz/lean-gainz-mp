@@ -1,62 +1,11 @@
 const mongoose = require('mongoose');
-const Meal = require('./models/mealPlan');
+const Meal = require('./meal');
+// const Meal = require('./mealPlan');
+const mealsData = require('./data.json');
+ 
+const db = require('../config/database');
 
-mongoose.connect('mongodb://localhost/lean-gainz-meal-prep.meals', { useNewUrlParser: true, useUnifiedTopology: true });
-
-const mealsData = [
-  {
-    name: 'Chicken Salad',
-    calories: 400,
-    price: 10.99,
-  },
-  {
-    name: 'Spaghetti Bolognese',
-    calories: 600,
-    price: 12.99,
-  },
-  {
-    name: 'Chicken Fried Rice',
-    calories: 400,
-    price: 10.99,
-  },
-  {
-    name: 'Thai Chicken Curry',
-    calories: 600,
-    price: 12.99,
-  },
-  {
-    name: 'Jerk Chicken',
-    calories: 400,
-    price: 10.99,
-  },
-  {
-    name: 'Cheesy Chicken and Rice',
-    calories: 600,
-    price: 12.99,
-  },
-  {
-    name: 'Pork Bahn Mi Bowl',
-    calories: 400,
-    price: 10.99,
-  },
-  
-  {
-    name: 'Stuffed Bell Peppers',
-    calories: 600,
-    price: 12.99,
-  },
-  {
-    name: 'Mushroom Chicken',
-    calories: 400,
-    price: 10.99,
-  },
-  
-  {
-    name: 'Meatball Heaven',
-    calories: 600,
-    price: 12.99,
-  },
-];
+// mongoose.connect('mongodb+srv://jmorgainz:RockyTop5440@cluster0.wa9b2f4.mongodb.net/lean-gainz-meal-prep?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Insert the meals into the database
 async function seedMeals() {
@@ -74,4 +23,21 @@ async function seedMeals() {
 // Run the seedMeals function to populate the database
 seedMeals();
 
-module.exports = mongoose.model('mealsData')
+// Mealplans Seed!!!
+// Insert the meals into the database
+async function seedMealPlans() {
+    try {
+      await Meal.deleteMany(); 
+      await Meal.insertMany(mealPlanData); 
+      console.log('Meal Plan seeded successfully');
+    } catch (error) {
+      console.error('Error seeding meal Plan:', error);
+    } finally {
+      mongoose.connection.close();
+    }
+  }
+  
+  // Run the seedMeals function to populate the database
+  seedMealPlans();
+
+// module.exports = mongoose.model('mealsData')
