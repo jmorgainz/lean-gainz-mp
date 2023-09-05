@@ -101,13 +101,5 @@ plan1.save();
 plan2.save();
 
 // You can now query meal plans and populate the 'meals' field to retrieve the embedded meal data when needed
-MealPlan.find({}).populate('selectedMeals').exec(
-//     (err, mealPlans) => {
-//   if (err) {
-//     console.error(err);
-//     return;
-//   }
-//   console.log(mealPlans);
-// }
-);
+MealPlan.find({}).populate('selectedMeals')
 module.exports = mongoose.model('MealPlan', mealPlanSchema)

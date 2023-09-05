@@ -19,9 +19,10 @@ async function index(req, res) {
     try {
       const mealId = req.params.id;
       const meal = await Meal.findById(mealId); // Fetch the meal by ID
-      if (!meal) {
-        return res.status(404).send('Meal not found');
-      }
+      console.log(meal)
+    //   if (!meal) {
+    //     return res.status(404).send('Meal not found');
+    //   }
       res.render('meals/show', { title: 'Meal Details', meal });
     } catch (error) {
       console.error(error);
