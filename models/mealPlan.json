@@ -1,0 +1,18 @@
+[
+    {
+      "plan": "basic",
+      "minMeals": 7,
+      "maxMeals": 7
+    },
+    {
+      "plan": "pro",
+      "minMeals": 10,
+      "maxMeals": 10
+    },
+    {
+      "plan": "gainz",
+      "minMeals": 14,
+      "maxMeals": 14
+    }
+  ]
+  
