@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Meal = require('./meal');
 const MealPlan = require('./mealPlan');
-// const Meal = require('./mealPlan');
 const mealsData = require('./meals.json');
 const mealPlanData = require('./mealPlan.json');
  
@@ -39,7 +38,3 @@ async function seedMealPlans() {
   }
 
   seedMeals();
-
-    // seedMealPlans();
-
-// module.exports = mongoose.model('mealsData')

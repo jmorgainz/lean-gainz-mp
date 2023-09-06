@@ -1,6 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const User = require("../models/user");
+const Cart = require("../models/cart");
 
 passport.use(
   new GoogleStrategy(
@@ -13,11 +14,14 @@ passport.use(
       try {
         let user = await User.findOne({ googleId: profile.id });
         if (user) return cb(null, user);
+        const newCart = new Cart();
+        await newCart.save();
         user = await User.create({
           name: profile.displayName,
           googleId: profile.id,
           email: profile.emails[0].value,
           avatar: profile.photos[0].value,
+          cart: newCart._id,
         });
         return cb(null, user);
       } catch (err) {

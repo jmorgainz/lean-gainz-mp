@@ -2,17 +2,20 @@
     {
       "plan": "basic",
       "minMeals": 7,
-      "maxMeals": 7
+      "maxMeals": 7,
+      "price": 85
     },
     {
       "plan": "pro",
       "minMeals": 10,
-      "maxMeals": 10
+      "maxMeals": 10,
+      "price": 110
     },
     {
       "plan": "gainz",
       "minMeals": 14,
-      "maxMeals": 14
+      "maxMeals": 14,
+      "price": 140
     }
   ]
   

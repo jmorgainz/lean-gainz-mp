@@ -16,7 +16,7 @@ var usersRouter = require('./routes/users');
 var mealsRouter = require('./routes/meals');
 var cartRouter = require('./routes/cart');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
