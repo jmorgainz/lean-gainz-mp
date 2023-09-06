@@ -1,4 +1,4 @@
-const Meal = require('../models/mealPlan')
+const Meal = require('../models/meal');  // Make sure to fetch the 'Meal' model, not 'MealPlan'
 
 module.exports = {
     index,
@@ -7,26 +7,26 @@ module.exports = {
 
 async function index(req, res) {
     try {
-      const meals = await Meal.find({});
-      res.render('meals/index', { title: 'All Meals', meals });
+        const meals = await Meal.find({});
+        console.log("Fetched meals:", meals)
+        // res.json(meals)
+        res.render('meals/index', { title: 'All Meals', meals });
     } catch (error) {
-      console.error('Error fetching meals:', error);
-      res.status(500).send('Internal Server Error');
+        console.error('Error fetching meals:', error);
+        res.status(500).send('Internal Server Error');
     }
-  }
+}
 
-  async function show(req, res) {
+async function show(req, res) {
     try {
-      const mealId = req.params.id;
-      const meal = await Meal.findById(mealId); // Fetch the meal by ID
-      console.log(meal)
-    //   if (!meal) {
-    //     return res.status(404).send('Meal not found');
-    //   }
-      res.render('meals/show', { title: 'Meal Details', meal });
+        const mealId = req.params.id;
+        const meal = await Meal.findById(mealId); // Fetch the meal by ID
+        if (!meal) {
+            return res.status(404).send('Meal not found');
+        }
+        res.render('meals/show', { title: meal.name, meal });
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
-  }
-  
+}

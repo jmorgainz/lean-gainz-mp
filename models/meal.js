@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 // Define the 'meals' schema
 const mealSchema = new mongoose.Schema({
   name: String,

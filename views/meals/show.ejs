@@ -1,69 +1,12 @@
-<%- include('../partials/header') %>
-
-<section id="meal-page">
-    <h1>Lean Gainz MP</h1>
-    <div class="meals-container">
-       
-        <div class="meal1">
-            <h2>Chicken Salad</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal2">
-            <h2>Spaghetti Bolognese</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal3">
-            <h2>Chicken Fried Rice</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal4">
-            <h2>Thai Chicken Curry</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal5">
-            <h2>Jerk Chicken</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal6">
-            <h2>Cheesy Chicken & Rice</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal7">
-            <h2>Pork Bahn Mi Bowl</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal8">
-            <h2>Stuffed Bell Peppers</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal9">
-            <h2>Mushroom Chicken</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-        <div class="meal10">
-            <h2>Meatball Heaven</h2>
-            <p>Calories: 400</p>
-            <p>Price:</p>
-        </div>
-
-
-
-
-
-
-    </div>
-
-
-
-
-
-</section>
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+</head>
+<body>
+    <h1><%= meal.name %></h1>
+    <p><%= meal.calories %> calories</p>
+    <p>$<%= meal.price %></p>
+    <a href="/meals">Back to All Meals</a>
+</body>
+</html>

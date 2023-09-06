@@ -1,1 +1,29 @@
 <%- include('../partials/header') %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+</head>
+<body>
+    <h1>All Meals</h1>
+    
+    <form action="/add-to-meal-plan" method="post">
+        <ul>
+            <% meals.forEach(meal => { %>
+                <li>
+                    <input type="checkbox" name="mealIds" value="<%= meal._id %>">
+                    <a href="/meals/<%= meal._id %>"><%= meal.name %></a> - <%= meal.calories %> calories - $<%= meal.price %>
+                </li>
+            <% }) %>
+        </ul>
+
+        <select name="mealPlanType">
+            <option value="basic">Basic - 7 Meals</option>
+            <option value="pro">Pro - 10 Meals</option>
+            <option value="gainz">Gainz - 14 Meals</option>
+        </select>
+        <input type="submit" value="Add to Meal Plan">
+    </form>
+</body>
+</html>

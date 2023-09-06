@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+
+<h1>Shopping Cart</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% cartItems.forEach(item => { %>
+            <tr>
+                <td><%= item.name %></td>
+                <td><%= item.quantity %></td>
+                <td>$<%= item.price.toFixed(2) %></td>
+                <td>$<%= (item.price * item.quantity).toFixed(2) %></td>
+                <td><button>Remove</button></td> <!-- This can be a form to post a remove action -->
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<h2>Total Price: $<%= totalPrice.toFixed(2) %></h2>
+
+<a href="/checkout">Proceed to Checkout</a>
