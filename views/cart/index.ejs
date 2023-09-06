@@ -9,19 +9,16 @@
     <h1>Your Cart</h1>
 
     <ul>
-        <% cartItems.forEach(meal => { %>
-            <li><%= meal.name %> - $<%= meal.price.toFixed(2) %></li>
+        <% cartPackages.forEach(package => { %>
+            <li>
+                <strong><%= package.mealPlan.plan %> - $<%= package.price.toFixed(2) %></strong> (Quantity: <%= package.quantity %>)
+                <ul>
+                    <% package.mealPlan.selectedMeals.forEach(meal => { %>
+                        <li><%= meal.name %></li>
+                    <% }) %>
+                </ul>
+            </li>
         <% }) %>
-
-        <% if (cartItems && cartItems.length > 0) { %>
-            <% cartItems.forEach(meal => { %>
-                <li><%= meal.name %> - $<%= meal.price.toFixed(2) %></li>
-            <% }) %>
-            <h2>Total: $<%= totalPrice.toFixed(2) %></h2>
-        <% } else { %>
-            <p>Your cart is empty.</p>
-        <% } %>
-        
     </ul>
 
     <h2>Total: $<%= totalPrice.toFixed(2) %></h2>

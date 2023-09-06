@@ -7,7 +7,6 @@ router.get('/', ensureLoggedIn, async (req, res) => {
     const userId = req.user._id;
 
     try {
-        // Fetch the user and populate the cart's items' mealPlans
         const user = await User.findById(userId).populate({
             path: 'cart',
             populate: {
@@ -22,27 +21,73 @@ router.get('/', ensureLoggedIn, async (req, res) => {
             return res.status(404).send('Cart not found.');
         }
 
-        console.log("User cart:", user.cart);
-        
-        if (!Array.isArray(user.cart.items)) {
-            console.error("Expected user.cart.items to be an array, but got:", user.cart.items);
-            return res.status(500).send('Unexpected cart format.');
-        }
+        const cartPackages = user.cart.items.map(item => ({
+            mealPlan: item.mealPlan,
+            quantity: item.quantity,
+            price: item.price
+        }));
+        const totalPrice = cartPackages.reduce((acc, package) => acc + (package.price * package.quantity), 0);
 
-        // Aggregate all selectedMeals from every mealPlan in the cart
-        let allSelectedMeals = [];
-        for (let item of user.cart.items) {
-            allSelectedMeals = [...allSelectedMeals, ...item.mealPlan.selectedMeals];
-        }
-
-        // Calculate the total price
-        const totalPrice = allSelectedMeals.reduce((acc, meal) => acc + meal.price, 0);
-
-        res.render('cart/index', { cartItems: allSelectedMeals, totalPrice });
+        res.render('cart/index', { cartPackages, totalPrice });
 
     } catch (error) {
         console.error("Error fetching cart:", error);
         res.status(500).send('There was a problem fetching the cart.');
+    }
+});
+
+router.get('/edit-meals/:packageId', ensureLoggedIn, async (req, res) => {
+    try {
+        const allMeals = await Meal.find();
+        const user = await User.findById(req.user._id).populate('cart.items.mealPlan');
+        const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
+
+        if (!packageItem) {
+            return res.status(404).send('Package not found in cart.');
+        }
+
+        const selectedMeals = packageItem.mealPlan.selectedMeals;
+
+        res.render('meals/edit', { allMeals, selectedMeals });
+    } catch (error) {
+        console.error("Error editing meals:", error);
+        res.status(500).send('There was a problem editing meals.');
+    }
+});
+
+router.post('/update-cart/:packageId', ensureLoggedIn, async (req, res) => {
+    try {
+        const newSelectedMeals = req.body.selectedMeals;
+        
+        const user = await User.findById(req.user._id);
+        const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
+
+        if (!packageItem) {
+            return res.status(404).send('Package not found in cart.');
+        }
+
+        packageItem.mealPlan.selectedMeals = newSelectedMeals;
+
+        await user.save();
+
+        res.redirect('/cart');
+    } catch (error) {
+        console.error("Error updating cart:", error);
+        res.status(500).send('There was a problem updating the cart.');
+    }
+});
+
+router.post('/remove-package/:packageId', ensureLoggedIn, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        user.cart.items = user.cart.items.filter(item => item.mealPlan._id.toString() !== req.params.packageId);
+
+        await user.save();
+
+        res.redirect('/cart');
+    } catch (error) {
+        console.error("Error removing package:", error);
+        res.status(500).send('There was a problem removing the package.');
     }
 });
 
