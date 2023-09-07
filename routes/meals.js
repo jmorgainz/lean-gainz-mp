@@ -25,13 +25,13 @@ router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
     const selectedPlan = mealPlanConfig[mealPlanType];
 
     // Validate number of selected meals based on mealPlanType
-    if (mealIds.length < selectedPlan.minMeals || mealIds.length > selectedPlan.maxMeals) {
-        return res.status(400).send(`Please select between ${selectedPlan.minMeals} and ${selectedPlan.maxMeals} meals.`);
+    if (!mealIds || !Array.isArray(mealIds) || mealIds.length < selectedPlan.minMeals || mealIds.length > selectedPlan.maxMeals) {
+        // return res.status(400).send(`Please select between ${selectedPlan.minMeals} and ${selectedPlan.maxMeals} meals.`);
     }
+    
 
     // Lookup the correct MealPlan ID based on its type
     const mealPlan = await MealPlan.findOne({ plan: mealPlanType });
-        console.log(mealPlan, 'herrrrrrreeeeeee');
     if (!mealPlan) {
         return res.status(404).send('Meal plan type not found in the database.');
     }

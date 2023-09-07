@@ -9,6 +9,7 @@
     <h1>Your Cart</h1>
     
     <form action="/cart/clear" method="post">
+
         <button type="submit">Empty Cart</button>
     </form>
 
@@ -16,6 +17,7 @@
         <% cartPackages.forEach(package => { %>
             <li>
                 <strong><%= package.mealPlan.plan %> - $<%= package.price.toFixed(2) %></strong> (Quantity: <%= package.quantity %>)
+                <a href="/cart/edit-meals/<%= package.mealPlan._id %>">Edit Meals</a>
                 <ul>
                     <% package.mealPlan.selectedMeals.forEach(meal => { %>
                         <li><%= meal.name %></li>

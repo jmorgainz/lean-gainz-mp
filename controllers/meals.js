@@ -10,7 +10,7 @@ async function index(req, res) {
         const meals = await Meal.find({});
         console.log("Fetched meals:", meals)
         // res.json(meals)
-        res.render('meals/index', { title: 'All Meals', meals });
+        res.render('meals/index', { allMeals: meals });
     } catch (error) {
         console.error('Error fetching meals:', error);
         res.status(500).send('Internal Server Error');

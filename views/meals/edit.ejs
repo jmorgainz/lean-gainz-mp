@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    
 </head>
 <body>
     <h1>All Meals</h1>
@@ -11,11 +12,10 @@
         <ul>
             <% allMeals.forEach(meal => { %>
                 <li>
-                    <!-- Display the name of the meal -->
-                    <span><%= meal.name %></span> - <%= meal.calories %> calories - $<%= meal.price %>
-            
+                    <span><%=meal.name %></span>
                     <!-- Quantity Input for each meal -->
-                    <input type="number" min="0" name="mealQty_<%= meal._id %>">
+                    <input type="number" min="0" name="mealQty_<%= meal._id %>" value="<%= (selectedMealsMap[meal._id] || {}).quantity || 0 %>">
+                    <!-- ... rest of your code for displaying each meal -->
                 </li>
             <% }) %>
             

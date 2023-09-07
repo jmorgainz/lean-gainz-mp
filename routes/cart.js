@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const ensureLoggedIn = require('../config/ensureLoggedIn');
 const mongoose = require('mongoose');
+const Meal = require('../models/meal');
 
 router.get('/', ensureLoggedIn, async (req, res) => {
     const userId = req.user._id;
@@ -40,27 +41,63 @@ router.get('/', ensureLoggedIn, async (req, res) => {
 router.get('/edit-meals/:packageId', ensureLoggedIn, async (req, res) => {
     try {
         const allMeals = await Meal.find();
-        const user = await User.findById(req.user._id).populate('cart.items.mealPlan');
-        const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
 
+        const user = await User.findById(req.user._id)
+        .populate({
+            path: 'cart',
+            populate: {
+                path: 'items.mealPlan'
+            }
+        });
+        
+        const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
         if (!packageItem) {
             return res.status(404).send('Package not found in cart.');
         }
 
-        const selectedMeals = packageItem.mealPlan.selectedMeals;
+        // Construct a map for selected meals
+        const selectedMealsMap = {};
 
-        res.render('meals/edit', { allMeals, selectedMeals });
+        selectedMeals.forEach(meal => {
+        selectedMealsMap[meal._id.toString()] = { quantity: meal.quantity }; 
+            // Assuming the meal object has a quantity attribute which has the number of that meal in the cart
+});
+
+
+        res.render('meals/edit', { allMeals, selectedMealsMap });
     } catch (error) {
         console.error("Error editing meals:", error);
         res.status(500).send('There was a problem editing meals.');
     }
 });
 
+
 router.post('/update-cart/:packageId', ensureLoggedIn, async (req, res) => {
     try {
-        const newSelectedMeals = req.body.selectedMeals;
+        // Calculate the total quantity of all meals
+        let totalMeals = 0;
+        const newSelectedMeals = {};
+
+        for (let key in req.body) {
+            if (key.startsWith('mealQty_') && req.body[key] > 0) {
+                const mealId = key.split('mealQty_')[1]; // Extract the actual meal ID from the key
+                const quantity = parseInt(req.body[key], 10);
+
+                totalMeals += quantity;
+                newSelectedMeals[mealId] = { quantity };
+            }
+        }
+
+        const user = await User.findById(req.user._id).populate({
+            path: 'cart',
+            populate: {
+                path: 'items.mealPlan',
+                populate: {
+                    path: 'selectedMeals'
+                }
+            }
+        });
         
-        const user = await User.findById(req.user._id);
         const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
 
         if (!packageItem) {
@@ -77,6 +114,7 @@ router.post('/update-cart/:packageId', ensureLoggedIn, async (req, res) => {
         res.status(500).send('There was a problem updating the cart.');
     }
 });
+
 
 router.post('/remove-package/:packageId', ensureLoggedIn, async (req, res) => {
     try {
