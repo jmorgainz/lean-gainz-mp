@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const ensureLoggedIn = require('../config/ensureLoggedIn');
+const mongoose = require('mongoose');
 
 router.get('/', ensureLoggedIn, async (req, res) => {
     const userId = req.user._id;
@@ -95,25 +96,34 @@ router.post('/clear', ensureLoggedIn, async (req, res) => {
     const userId = req.user._id;
 
     try {
-        const user = await User.findById(userId);
-        if (user && user.cart) {
-            console.log("Before clearing:", JSON.stringify(user.cart.items, null, 2));
+        const user = await User.findById(userId).populate('cart');
 
-            user.cart.items = []
-
-            console.log("After clearing:", JSON.stringify(user.cart.items, null, 2));
-
-            await user.save();
-            // await User.updateOne({ _id: userId }, {$set:{ 'cart.items': [] }});            await user.save();
-            console.log("cart cleared successfully")
+        if (!user) {
+            console.log("User not found");
+            return res.status(404).send('User not found.');
         }
 
+        if (!user.cart || !(user.cart instanceof mongoose.Model)) {
+            console.log("Cart not found or not an instance of mongoose.Model");
+            return res.status(404).send('Cart not found.');
+        }
+        
+        console.log("Before clearing:", JSON.stringify(user.cart.items, null, 2));
+
+        user.cart.items = [];
+
+        console.log("After clearing:", JSON.stringify(user.cart.items, null, 2));
+
+        await user.cart.save();  // Save the cart directly
+        console.log("cart cleared successfully");
+        
         res.redirect('/cart');  // Redirect back to the cart page
     } catch (error) {
         console.error("Error clearing cart:", error);
         res.status(500).send('There was a problem clearing the cart.');
     }
 });
+
 // end of new route for clearing
 
 module.exports = router;
