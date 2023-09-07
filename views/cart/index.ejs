@@ -7,6 +7,10 @@
 </head>
 <body>
     <h1>Your Cart</h1>
+    
+    <form action="/cart/clear" method="post">
+        <button type="submit">Empty Cart</button>
+    </form>
 
     <ul>
         <% cartPackages.forEach(package => { %>

@@ -90,5 +90,30 @@ router.post('/remove-package/:packageId', ensureLoggedIn, async (req, res) => {
         res.status(500).send('There was a problem removing the package.');
     }
 });
+// new route for clearing
+router.post('/clear', ensureLoggedIn, async (req, res) => {
+    const userId = req.user._id;
+
+    try {
+        const user = await User.findById(userId);
+        if (user && user.cart) {
+            console.log("Before clearing:", JSON.stringify(user.cart.items, null, 2));
+
+            user.cart.items = []
+
+            console.log("After clearing:", JSON.stringify(user.cart.items, null, 2));
+
+            await user.save();
+            // await User.updateOne({ _id: userId }, {$set:{ 'cart.items': [] }});            await user.save();
+            console.log("cart cleared successfully")
+        }
+
+        res.redirect('/cart');  // Redirect back to the cart page
+    } catch (error) {
+        console.error("Error clearing cart:", error);
+        res.status(500).send('There was a problem clearing the cart.');
+    }
+});
+// end of new route for clearing
 
 module.exports = router;
