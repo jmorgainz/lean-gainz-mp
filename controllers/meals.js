@@ -8,7 +8,7 @@ module.exports = {
 async function index(req, res) {
     try {
         const meals = await Meal.find({});
-        console.log("Fetched meals:", meals)
+        // console.log("Fetched meals:", meals)
         // res.json(meals)
         res.render('meals/index', { allMeals: meals });
     } catch (error) {

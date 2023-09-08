@@ -10,12 +10,9 @@ router.get('/meals', mealsCtrl.index);
 router.get('/meals/:id', mealsCtrl.show);
 
 router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
-    const { mealIds, mealPlanType } = req.body;
-    // console.log(mealIds, mealPlanType);
-    // Assuming you store the authenticated user's ID in req.session or req.user
+    const { selectedMeals, mealPlanType } = req.body;
     const userId = req.user._id;
 
-    // Depending on your meal plan types
     const mealPlanConfig = {
         basic: { minMeals: 7, maxMeals: 7 },
         pro: { minMeals: 10, maxMeals: 10 },
@@ -24,25 +21,17 @@ router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
 
     const selectedPlan = mealPlanConfig[mealPlanType];
 
-    // Validate number of selected meals based on mealPlanType
-    if (!mealIds || !Array.isArray(mealIds) || mealIds.length < selectedPlan.minMeals || mealIds.length > selectedPlan.maxMeals) {
+    if (!selectedMeals || !Array.isArray(selectedMeals) || selectedMeals.length < selectedPlan.minMeals || selectedMeals.length > selectedPlan.maxMeals) {
         // return res.status(400).send(`Please select between ${selectedPlan.minMeals} and ${selectedPlan.maxMeals} meals.`);
     }
-    
 
-    // Lookup the correct MealPlan ID based on its type
     const mealPlan = await MealPlan.findOne({ plan: mealPlanType });
     if (!mealPlan) {
         return res.status(404).send('Meal plan type not found in the database.');
     }
 
     try {
-        mealPlan.selectedMeals = mealIds;
-        await mealPlan.save();
-        // Find the user and their cart
         const user = await User.findById(userId).populate('cart');
-        console.log('Retrieved User:',user)
-        console.log('User Cart:',user.cart)
 
         if (!user) {
             return res.status(404).send('User not found.');
@@ -50,15 +39,36 @@ router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
 
         const userCart = user.cart;
 
-        // Add the meals to the cart using the addToCart method you defined in the Cart model
-        await userCart.addToCart(mealPlan._id);  // Now using the ID of the found meal plan
-        
-        res.redirect('/cart'); // Redirect to the cart page or wherever you'd like
+        // Check if a meal plan of the same type already exists in the cart
+        const existingCartItemIndex = userCart.items.findIndex(item => item.mealPlan.equals(mealPlan._id));
+
+        if (existingCartItemIndex !== -1) {
+            // Update the selectedMeals for the existing cart item
+            userCart.items[existingCartItemIndex].selectedMeals = selectedMeals;
+        } else {
+            // Create a new cart item with the selected meals and meal plan
+            const cartItem = {
+                mealPlan: mealPlan._id,
+                selectedMeals: selectedMeals,
+                quantity: 1,
+                price: mealPlan.price
+            };
+
+            // Add the cart item to the user's cart
+            userCart.items.push(cartItem);
+        }
+
+        await userCart.save();
+
+        res.redirect('/cart');
 
     } catch (error) {
         console.error("Error adding meal plan to cart:", error);
         res.status(500).send('There was a problem adding the meal plan to the cart.');
     }
 });
+
+
+
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const MealPlan = require('./mealPlan')
-const Meal = require('./meal')
+const MealPlan = require('./mealPlan');
+const Meal = require('./meal');
 
 // Individual cart item schema
 const cartItemSchema = new mongoose.Schema({
@@ -12,7 +12,11 @@ const cartItemSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
-    price: Number
+    price: Number,
+    selectedMeals: [{  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Meal'      
+    }]
 });
 
 const cartSchema = new mongoose.Schema({
@@ -20,35 +24,43 @@ const cartSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', 
-    },
-    selectedMeals: [{  
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Meal'      
-    }]
+    }
 });
 
 cartSchema.methods.addToCart = async function(mealPlanId, selectedMeals) {
-    // Find if the mealPlan is already in the cart
+    
     const cartItemIndex = this.items.findIndex(item => item.mealPlan.toString() === mealPlanId);
+    console.log('mealPlanId:', mealPlanId);
+    console.log('selectedMeals:', selectedMeals);
+
+    const mealPlan = await MealPlan.findById(mealPlanId);
+    console.log('Fetched MealPlan:', mealPlan);
+
+    if (!mealPlan) {
+        throw new Error('Meal plan not found');
+    }
+
+    const meals = await Meal.find({ _id: { $in: selectedMeals } });
+    if (meals.length !== selectedMeals.length) {
+        throw new Error('Some selected meals do not exist');
+    }
 
     if (cartItemIndex !== -1) {
         // If the item exists, increment its quantity
         this.items[cartItemIndex].quantity += 1;
+        // Update the selected meals
+        this.items[cartItemIndex].selectedMeals = meals;
     } else {
-        // Otherwise, fetch the meal plan and its price and add it to the cart
-        const mealPlan = await mongoose.model('MealPlan').findById(mealPlanId);
-        if (!mealPlan) {
-            throw new Error('Meal plan not found');
-        }
-
+        // Otherwise, add the meal plan and its price to the cart
         const newCartItem = {
-            mealPlan: mealPlanId,
+            mealPlan: mealPlan._id,  
             price: mealPlan.price,
-            selectedMeals: selectedMeals,
+            selectedMeals: meals,
         };
 
         this.items.push(newCartItem);
     }
+    console.log('Modified Cart:', this)
 
     return await this.save();
 };

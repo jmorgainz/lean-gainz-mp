@@ -14,8 +14,8 @@
                     <!-- Display the name of the meal -->
                     <span><%= meal.name %></span> - <%= meal.calories %> calories - $<%= meal.price %>
             
-                    <!-- Quantity Input for each meal -->
-                    <input type="number" min="0" name="mealQty_<%= meal._id %>">
+                    <!-- Checkbox for each meal -->
+                    <input type="checkbox" name="selectedMeals" value="<%= meal._id %>">
                 </li>
             <% }) %>
             

@@ -3,9 +3,10 @@ const User = require('../models/user')
 
 module.exports = {
     addToCart,
-    
 }
 async function addToCart(req, res) {
+    console.log('req.body:',req.body);
+
     try {
         // Assuming user is authenticated and req.user is set
         if (!req.user) {
@@ -19,27 +20,16 @@ async function addToCart(req, res) {
         }
 
         // Assuming the meal plan ID is being sent in the body of the POST request as mealPlanId
-        const mealPlanId = req.body.mealPlanId;
+        const { mealPlanId, selectedMeals } = req.body;
         if (!mealPlanId) {
             throw new Error('Meal plan not specified');
         }
 
         // Call the method to add a meal plan to the cart. You can also add any other necessary information.
-        await user.cart.addMealPlan(mealPlanId);
+        const cart = await user.cart.addToCart(mealPlanId, selectedMeals);
 
-        res.json({ message: 'Meal plan added to cart' });
+        res.json({ message: 'Meal plan added to cart', cart: cart });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
-
-
-// let userCart = new Cart()
-
-// userCart.addCartItem(selectedMealPlanId, selectedMealIds)
-// .then((cartItem) => {
-//     console.log('Item added to cart', cartItem)
-// })
-// .catch((error) => {
-//     console.error('Error adding item to cart', error)
-// });

@@ -4,6 +4,10 @@ const User = require('../models/user');
 const ensureLoggedIn = require('../config/ensureLoggedIn');
 const mongoose = require('mongoose');
 const Meal = require('../models/meal');
+const cartCtrl = require('../controllers/cart');
+const Cart = require('../models/cart');
+
+
 
 router.get('/', ensureLoggedIn, async (req, res) => {
     const userId = req.user._id;
@@ -12,10 +16,7 @@ router.get('/', ensureLoggedIn, async (req, res) => {
         const user = await User.findById(userId).populate({
             path: 'cart',
             populate: {
-                path: 'items.mealPlan',
-                populate: {
-                    path: 'selectedMeals'
-                }
+                path: 'items.mealPlan items.selectedMeals', // populate both mealPlan and selectedMeals
             }
         });
 
@@ -26,7 +27,8 @@ router.get('/', ensureLoggedIn, async (req, res) => {
         const cartPackages = user.cart.items.map(item => ({
             mealPlan: item.mealPlan,
             quantity: item.quantity,
-            price: item.price
+            price: item.price,
+            selectedMeals: item.selectedMeals // it is already in item object
         }));
         const totalPrice = cartPackages.reduce((acc, package) => acc + (package.price * package.quantity), 0);
 
@@ -58,7 +60,7 @@ router.get('/edit-meals/:packageId', ensureLoggedIn, async (req, res) => {
         // Construct a map for selected meals
         const selectedMealsMap = {};
 
-        selectedMeals.forEach(meal => {
+        packageItem.mealPlan.selectedMeals.forEach(meal => {
         selectedMealsMap[meal._id.toString()] = { quantity: meal.quantity }; 
             // Assuming the meal object has a quantity attribute which has the number of that meal in the cart
 });
@@ -72,41 +74,43 @@ router.get('/edit-meals/:packageId', ensureLoggedIn, async (req, res) => {
 });
 
 
-router.post('/update-cart/:packageId', ensureLoggedIn, async (req, res) => {
+router.post('/update-cart/:packageId', ensureLoggedIn, cartCtrl.addToCart, async (req, res) => {
+    console.log('firing--------')
     try {
         // Calculate the total quantity of all meals
         let totalMeals = 0;
-        const newSelectedMeals = {};
-
+        const newSelectedMeals = [];
         for (let key in req.body) {
-            if (key.startsWith('mealQty_') && req.body[key] > 0) {
-                const mealId = key.split('mealQty_')[1]; // Extract the actual meal ID from the key
-                const quantity = parseInt(req.body[key], 10);
+        if (key.startsWith('mealQty_') && req.body[key] > 0) {
+            const mealId = key.split('mealQty_')[1];
+            const quantity = parseInt(req.body[key], 10);
 
-                totalMeals += quantity;
-                newSelectedMeals[mealId] = { quantity };
+            totalMeals += quantity;
+            // Add the mealId quantity times
+            for (let i = 0; i < quantity; i++) {
+                newSelectedMeals.push(mealId);
+                console.log(newSelectedMeals)
             }
         }
+    }
 
         const user = await User.findById(req.user._id).populate({
-            path: 'cart',
-            populate: {
-                path: 'items.mealPlan',
-                populate: {
-                    path: 'selectedMeals'
-                }
-            }
+            path: 'cart.items.mealPlan.selectedMeals',
+            model: 'Meal'  // Specify the model since selectedMeals is referring to the 'Meal' model
         });
-        
+
+
         const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
 
         if (!packageItem) {
             return res.status(404).send('Package not found in cart.');
         }
-
+        
         packageItem.mealPlan.selectedMeals = newSelectedMeals;
-
+        console.log(packageItem)
+        await packageItem.mealPlan.save();
         await user.save();
+
 
         res.redirect('/cart');
     } catch (error) {
