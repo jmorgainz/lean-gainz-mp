@@ -6,19 +6,17 @@
     
 </head>
 <body>
-    <h1>All Meals</h1>
+    <h1>Edit Meals</h1>
     
-    <form action="/add-to-cart" method="post">
+    <form action="/cart/edit-meals/<%= mealPlan._id %>" method="post">
         <ul>
             <% allMeals.forEach(meal => { %>
                 <li>
-                    <span><%=meal.name %></span>
-                    <!-- Quantity Input for each meal -->
-                    <input type="number" min="0" name="mealQty_<%= meal._id %>" value="<%= (selectedMealsMap[meal._id] || {}).quantity || 0 %>">
-                    <!-- ... rest of your code for displaying each meal -->
+                    <span><%= meal.name %></span>
+                    <input type="checkbox" name="selectedMeals" value="<%= meal._id %>" <%= selectedMealsMap[meal._id] ? 'checked' : '' %>>
+
                 </li>
             <% }) %>
-            
         </ul>
 
         <select name="mealPlanType">

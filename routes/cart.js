@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Meal = require('../models/meal');
 const cartCtrl = require('../controllers/cart');
 const Cart = require('../models/cart');
+const meals = require('../controllers/meals');
 
 
 
@@ -40,84 +41,117 @@ router.get('/', ensureLoggedIn, async (req, res) => {
     }
 });
 
-router.get('/edit-meals/:packageId', ensureLoggedIn, async (req, res) => {
-    try {
-        const allMeals = await Meal.find();
+router.get('/edit-meals/:id', ensureLoggedIn, async (req, res,) => {
+    const mealPlanId = req.params.id;
+    const userId = req.user._id;
 
-        const user = await User.findById(req.user._id)
-        .populate({
+    console.log("Meal Plan ID:", mealPlanId);
+    console.log("User ID:", userId);
+
+    try {
+        const user = await User.findById(userId).populate({
             path: 'cart',
             populate: {
-                path: 'items.mealPlan'
+                path: 'items.mealPlan',
+                model: 'MealPlan'
             }
         });
-        
-        const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
-        if (!packageItem) {
-            return res.status(404).send('Package not found in cart.');
+
+        if (!user) {
+            console.error("User not found");
+            return res.status(404).send('User not found.');
         }
 
-        // Construct a map for selected meals
-        const selectedMealsMap = {};
+        const userCart = user.cart;
+        const cartItem = userCart.items.find(item => item.mealPlan._id.equals(mealPlanId));
 
-        packageItem.mealPlan.selectedMeals.forEach(meal => {
-        selectedMealsMap[meal._id.toString()] = { quantity: meal.quantity }; 
-            // Assuming the meal object has a quantity attribute which has the number of that meal in the cart
-});
+        if (!cartItem) {
+            console.error("Meal plan not found in the cart");
+            return res.status(404).send('Meal plan not found in the cart.');
+        }
 
+        const selectedMeals = await Meal.find({
+            _id: { $in: cartItem.selectedMeals }
+        });
 
-        res.render('meals/edit', { allMeals, selectedMealsMap });
+        const allMeals = await Meal.find({})
+
+        console.log("SELECTED MEALS FROM DB:", selectedMeals);
+
+        // create a map of selectedMeals for easy access in the view
+        const selectedMealsMap = selectedMeals.reduce((map, meal) => {
+            map[meal._id] = meal;
+            return map;
+        }, {});
+
+        console.log("SELECETED MEALS MAP:", selectedMealsMap);
+
+        res.render('meals/edit', { 
+            user: req.user, 
+            cart: userCart, 
+            mealPlan: cartItem.mealPlan,
+            selectedMealsMap: selectedMealsMap,
+            allMeals: allMeals
+            
+        });
+
     } catch (error) {
-        console.error("Error editing meals:", error);
-        res.status(500).send('There was a problem editing meals.');
+        console.error("Error fetching selected meals:", error);
+        res.status(500).send('There was a problem fetching the selected meals.');
     }
 });
 
-
-router.post('/update-cart/:packageId', ensureLoggedIn, cartCtrl.addToCart, async (req, res) => {
-    console.log('firing--------')
+router.post('/edit-meals/:id', ensureLoggedIn, async (req, res) => {
+    console.log('UPDATE CART ROUTE HANDLER CALLED HERE')
     try {
-        // Calculate the total quantity of all meals
-        let totalMeals = 0;
-        const newSelectedMeals = [];
-        for (let key in req.body) {
-        if (key.startsWith('mealQty_') && req.body[key] > 0) {
-            const mealId = key.split('mealQty_')[1];
-            const quantity = parseInt(req.body[key], 10);
-
-            totalMeals += quantity;
-            // Add the mealId quantity times
-            for (let i = 0; i < quantity; i++) {
-                newSelectedMeals.push(mealId);
-                console.log(newSelectedMeals)
-            }
+        const mealPlanId = req.params.id;
+        let newSelectedMeals = req.body.selectedMeals || [];
+        const newMealPlanType = req.body.mealPlanType;
+    
+        // convert selectedMeals to array if it's a string
+        if (typeof newSelectedMeals === 'string') {
+            newSelectedMeals = [newSelectedMeals];
         }
-    }
-
-        const user = await User.findById(req.user._id).populate({
-            path: 'cart.items.mealPlan.selectedMeals',
-            model: 'Meal'  // Specify the model since selectedMeals is referring to the 'Meal' model
+    
+        // convert selectedMeals to ObjectIds
+        newSelectedMeals = newSelectedMeals.map(mealId => new mongoose.Types.ObjectId(mealId));
+    
+        // Find the user and populate the cart
+        const user = await User.findById(req.user._id).populate('cart');
+    
+        // Find the cart and populate the items and mealPlans
+        const cart = await Cart.findById(user.cart._id).populate({
+            path: 'items.mealPlan',
+            model: 'MealPlan'
         });
-
-
-        const packageItem = user.cart.items.find(item => item.mealPlan._id.toString() === req.params.packageId);
-
+    
+        // Find the mealPlan item to be updated
+        const packageItem = cart.items.find(item => item.mealPlan._id.toString() === mealPlanId);
+    
         if (!packageItem) {
             return res.status(404).send('Package not found in cart.');
         }
-        
-        packageItem.mealPlan.selectedMeals = newSelectedMeals;
-        console.log(packageItem)
-        await packageItem.mealPlan.save();
-        await user.save();
-
-
+    
+        // update selected meals and meal plan type
+        packageItem.selectedMeals = newSelectedMeals;
+        packageItem.plan = newMealPlanType;
+    
+        cart.markModified('items');
+        await cart.save();
+    
         res.redirect('/cart');
     } catch (error) {
         console.error("Error updating cart:", error);
         res.status(500).send('There was a problem updating the cart.');
     }
+    
 });
+
+
+
+
+
+
 
 
 router.post('/remove-package/:packageId', ensureLoggedIn, async (req, res) => {

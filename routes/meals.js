@@ -5,6 +5,7 @@ const Cart = require('../models/cart');
 const User = require('../models/user'); 
 const MealPlan = require('../models/mealPlan'); // Include the MealPlan model
 const ensureLoggedIn = require('../config/ensureLoggedIn');
+const Meal = require('../models/meal');
 
 router.get('/meals', mealsCtrl.index);
 router.get('/meals/:id', mealsCtrl.show);
@@ -67,6 +68,8 @@ router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
         res.status(500).send('There was a problem adding the meal plan to the cart.');
     }
 });
+
+
 
 
 
