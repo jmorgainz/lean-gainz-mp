@@ -9,24 +9,27 @@
     
     <form action="/add-to-cart" method="post">
         <ul>
+            <select name="mealPlanType">
+                <option value="basic">Basic - 7 Meals</option>
+                <option value="pro">Pro - 10 Meals</option>
+                <option value="gainz">Gainz - 14 Meals</option>
+            </select>
             <% allMeals.forEach(meal => { %>
                 <li>
                     <!-- Display the name of the meal -->
-                    <span><%= meal.name %></span> - <%= meal.calories %> calories - $<%= meal.price %>
-            
+                    <span class="meals"><%= meal.name %></span> - <%= meal.calories %> calories - 
+                    
                     <!-- Checkbox for each meal -->
-                    <input type="checkbox" name="selectedMeals" value="<%= meal._id %>">
+                    <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>">
+                    <label for="<%= meal._id %>"></label>
                 </li>
             <% }) %>
             
+                <input class="cartBtn" type="submit" value="Add to Cart">
+            
         </ul>
 
-        <select name="mealPlanType">
-            <option value="basic">Basic - 7 Meals</option>
-            <option value="pro">Pro - 10 Meals</option>
-            <option value="gainz">Gainz - 14 Meals</option>
-        </select>
-        <input type="submit" value="Add to Cart">
     </form>
 </body>
 </html>
+<%- include('../partials/footer') %>
