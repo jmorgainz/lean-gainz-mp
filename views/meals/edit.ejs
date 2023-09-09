@@ -5,7 +5,7 @@
 <head>
     
 </head>
-<body>
+<body class="editMeals">
     <h1>Edit Meals</h1>
     
     <form action="/cart/edit-meals/<%= mealPlan._id %>" method="post">
@@ -13,7 +13,9 @@
             <% allMeals.forEach(meal => { %>
                 <li>
                     <span><%= meal.name %></span>
-                    <input type="checkbox" name="selectedMeals" value="<%= meal._id %>" <%= selectedMealsMap[meal._id] ? 'checked' : '' %>>
+                    <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>" <%= selectedMealsMap[meal._id] ? 'checked' : '' %>>
+                    <label for="<%= meal._id %>"></label>
+
 
                 </li>
             <% }) %>

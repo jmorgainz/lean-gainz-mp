@@ -1,52 +1,92 @@
 [
     {
-      "name": "Chicken Salad",
-      "calories": 400,
-      "price": 10.99
-    },
-    {
-      "name": "Spaghetti Bolognese",
-      "calories": 600,
-      "price": 12.99
-    },
-    {
-      "name": "Chicken Fried Rice",
-      "calories": 400,
-      "price": 10.99
-    },
-    {
-      "name": "Thai Chicken Curry",
-      "calories": 600,
-      "price": 12.99
-    },
-    {
-      "name": "Jerk Chicken",
-      "calories": 400,
-      "price": 10.99
-    },
-    {
-      "name": "Cheesy Chicken and Rice",
-      "calories": 600,
-      "price": 12.99
-    },
-    {
       "name": "Pork Bahn Mi Bowl",
-      "calories": 400,
-      "price": 10.99
+      "calories": 550,
+      "price": 10.99,
+      "image": "/images/bahnMiRiceBowl.webp"
     },
     {
-      "name": "Stuffed Bell Peppers",
-      "calories": 600,
-      "price": 12.99
+      "name": "Bison Mash",
+      "calories": 480,
+      "price": 12.99,
+      "image": "/images/bison.webp"
     },
     {
-      "name": "Mushroom Chicken",
-      "calories": 400,
-      "price": 10.99
+      "name": "Butter Chicken",
+      "calories": 475,
+      "price": 10.99,
+      "image": "/images/butterChicken.webp"
     },
     {
-      "name": "Meatball Heaven",
-      "calories": 600,
-      "price": 12.99
+      "name": "Chicken Pasta",
+      "calories": 570,
+      "price": 12.99,
+      "image": "/images/chickenPasta.webp"
+    },
+    {
+      "name": "Asian Chicken Salad",
+      "calories": 475,
+      "price": 10.99,
+      "image": "/images/chickenSalad.webp"
+    },
+    {
+      "name": "Crusted Salmon",
+      "calories": 550,
+      "price": 12.99,
+      "image": "/images/crustedSalmon.webp"
+    },
+    {
+      "name": "Fire Cracker Chicken",
+      "calories": 480,
+      "price": 10.99,
+      "image": "/images/fireCrackerChicken.webp"
+    },
+    {
+      "name": "GochuJang Beef Ramen",
+      "calories": 545,
+      "price": 12.99,
+      "image": "/images/gochujangBeefRamen.webp"
+    },
+    {
+      "name": "Pollo Guisado",
+      "calories": 490,
+      "price": 10.99,
+      "image": "/images/guisado.webp"
+    },
+    {
+      "name": "Honey Garlic Shrimp",
+      "calories": 420,
+      "price": 12.99,
+      "image": "/images/honeyGarlicShrimp.webp"
+    },
+    {
+      "name": "Miso Salmon",
+      "calories": 520,
+      "price": 12.99,
+      "image": "/images/misoSalmon.webp"
+    },
+    {
+      "name": "Mongolian Beef",
+      "calories": 460,
+      "price": 12.99,
+      "image": "/images/mongolianBeefBowl.webp"
+    },
+    {
+      "name": "Orange Chicken",
+      "calories": 450,
+      "price": 12.99,
+      "image": "/images/orangeChicken.webp"
+    },
+    {
+      "name": "Panang Curry",
+      "calories": 510,
+      "price": 12.99,
+      "image": "/images/PanangCurry.webp"
+    },
+    {
+      "name": "Teriyaki Meatballs",
+      "calories": 385,
+      "price": 12.99,
+      "image": "/images/teriyakiMeatballs.webp"
     }
   ]

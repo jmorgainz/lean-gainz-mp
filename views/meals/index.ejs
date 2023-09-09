@@ -15,21 +15,25 @@
                 <option value="gainz">Gainz - 14 Meals</option>
             </select>
             <% allMeals.forEach(meal => { %>
-                <li>
-                    <!-- Display the name of the meal -->
-                    <span class="meals"><%= meal.name %></span> - <%= meal.calories %> calories - 
-                    
-                    <!-- Checkbox for each meal -->
-                    <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>">
-                    <label for="<%= meal._id %>"></label>
-                </li>
+                <div class="meal-card">
+                    <li>
+                        <img src="<%= 'http://localhost:3000' + meal.image %>" alt="<%= meal.name %>">
+                        <div>
+                            <span class="meals"><%= meal.name %></span> <%= meal.calories %> calories
+                            <p><%= meal.description %></p>
+                        </div>
+                        <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>">
+                        <label for="<%= meal._id %>"></label>
+                    </li>
+                </div>
+                
             <% }) %>
             
                 <input class="cartBtn" type="submit" value="Add to Cart">
             
         </ul>
-
     </form>
+    
 </body>
 </html>
 <%- include('../partials/footer') %>
