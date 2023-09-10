@@ -31,18 +31,16 @@ header {
   text-decoration: none;
 }
 
-
 main {
   display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 20px;
-    margin: 30px auto 0;
-    max-width: 1200px;
-    padding: 0 20px;
-    
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  margin: 30px auto 0;
+  max-width: 1200px;
+  padding: 0 20px;
 }
 
 main section {
@@ -74,8 +72,8 @@ input[type="checkbox"] + label:before {
   position: absolute;
   left: 0;
   top: 0;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border: 2px solid #000;
   background: #fff;
 }
@@ -100,18 +98,24 @@ li {
 
 .meal-card {
   border: 1px solid #ddd;
-  padding: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  padding-right: 40px;
 }
 
 .meal-card img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
+  max-width: 120px;
+  height:auto;
   border-radius: 50%;
   margin-right: 20px;
 }
@@ -125,4 +129,67 @@ li {
   margin: 0;
 }
 
+.content-body {
+  padding-bottom: 60px; /* Adjust this value based on the height of your footer */
+}
 
+.meal-plan-title {
+  margin-bottom: 20px; /* Adjust this value based on how much space you want */
+}
+
+/* New styles added */
+
+.meals {
+  font-weight: bold;
+  color: #333; /* Adjust color as needed */
+}
+
+.calories {
+  color: #FF5733; /* Example color for calories */
+}
+
+.protein {
+  color: #33FF57; /* Example color for protein */
+}
+
+.carbs {
+  color: #5733FF; /* Example color for carbs */
+}
+
+.fat {
+  color: #FF33A1; /* Example color for fat */
+}
+
+.meal-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 30px;
+}
+
+.macros {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: flex-end; 
+  width: 75%; 
+  position: absolute; 
+  bottom: 10px; 
+  left: 10px; 
+}
+
+.macro {
+  padding: 2px 4px; /* Adjust as needed */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9; /* Adjust as needed */
+  margin-right: 5px;
+  font-size: 0.7em;
+}
+
+.meal-checkbox {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust as needed */
+  transform: translateY(-50%);
+}

@@ -4,7 +4,7 @@
 <html>
 <head>
 </head>
-<body>
+<body class="content-body">
     <h1>All Meals</h1>
     
     <form action="/add-to-cart" method="post">
@@ -16,21 +16,27 @@
             </select>
             <% allMeals.forEach(meal => { %>
                 <div class="meal-card">
-                    <li>
-                        <img src="<%= 'http://localhost:3000' + meal.image %>" alt="<%= meal.name %>">
+                    <div class="meal-info">
+                        <img src="<%= meal.image %>" alt="<%= meal.name %>">
                         <div>
-                            <span class="meals"><%= meal.name %></span> <%= meal.calories %> calories
-                            <p><%= meal.description %></p>
+                            <span class="meals"><%= meal.name %></span>
                         </div>
+                    </div>
+                    <div class="macros">
+                        <div class="macro calories"><%= meal.calories %> cal</div>
+                        <div class="macro protein"><%= meal.protein %>g protein</div>
+                        <div class="macro carbs"><%= meal.carbs %>g carbs</div>
+                        <div class="macro fat"><%= meal.fat %>g fat</div>
+                    </div>
+                    <div class="meal-checkbox">
                         <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>">
                         <label for="<%= meal._id %>"></label>
-                    </li>
+                    </div>
                 </div>
                 
+                
             <% }) %>
-            
                 <input class="cartBtn" type="submit" value="Add to Cart">
-            
         </ul>
     </form>
     

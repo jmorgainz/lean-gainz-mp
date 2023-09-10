@@ -3,90 +3,135 @@
       "name": "Pork Bahn Mi Bowl",
       "calories": 550,
       "price": 10.99,
+      "protein": "28",
+      "carbs": "35",
+      "fat": "22",
       "image": "/images/bahnMiRiceBowl.webp"
     },
     {
       "name": "Bison Mash",
       "calories": 480,
       "price": 12.99,
+      "protein": "32",
+      "carbs": "35",
+      "fat": "18",
       "image": "/images/bison.webp"
     },
     {
       "name": "Butter Chicken",
       "calories": 475,
       "price": 10.99,
+      "protein": "25",
+      "carbs": "32",
+      "fat": "12",
       "image": "/images/butterChicken.webp"
     },
     {
       "name": "Chicken Pasta",
       "calories": 570,
       "price": 12.99,
+      "protein": "36",
+      "carbs": "45",
+      "fat": "17",
       "image": "/images/chickenPasta.webp"
     },
     {
       "name": "Asian Chicken Salad",
       "calories": 475,
       "price": 10.99,
+      "protein": "32",
+      "carbs": "12",
+      "fat": "20",
       "image": "/images/chickenSalad.webp"
     },
     {
       "name": "Crusted Salmon",
       "calories": 550,
       "price": 12.99,
+      "protein": "32",
+      "carbs": "28",
+      "fat": "18",
       "image": "/images/crustedSalmon.webp"
     },
     {
       "name": "Fire Cracker Chicken",
       "calories": 480,
       "price": 10.99,
+      "protein": "28",
+      "carbs": "35",
+      "fat": "12",
       "image": "/images/fireCrackerChicken.webp"
     },
     {
       "name": "GochuJang Beef Ramen",
       "calories": 545,
       "price": 12.99,
+      "protein": "28",
+      "carbs": "35",
+      "fat": "18",
       "image": "/images/gochujangBeefRamen.webp"
     },
     {
       "name": "Pollo Guisado",
       "calories": 490,
       "price": 10.99,
+      "protein": "32",
+      "carbs": "40",
+      "fat": "10",
       "image": "/images/guisado.webp"
     },
     {
       "name": "Honey Garlic Shrimp",
       "calories": 420,
       "price": 12.99,
+      "protein": "28",
+      "carbs": "35",
+      "fat": "6",
       "image": "/images/honeyGarlicShrimp.webp"
     },
     {
       "name": "Miso Salmon",
       "calories": 520,
       "price": 12.99,
+      "protein": "34",
+      "carbs": "35",
+      "fat": "18",
       "image": "/images/misoSalmon.webp"
     },
     {
       "name": "Mongolian Beef",
       "calories": 460,
       "price": 12.99,
+      "protein": "30",
+      "carbs": "20",
+      "fat": "13",
       "image": "/images/mongolianBeefBowl.webp"
     },
     {
       "name": "Orange Chicken",
       "calories": 450,
       "price": 12.99,
+      "protein": "29",
+      "carbs": "18",
+      "fat": "10",
       "image": "/images/orangeChicken.webp"
     },
     {
       "name": "Panang Curry",
       "calories": 510,
       "price": 12.99,
+      "protein": "28",
+      "carbs": "35",
+      "fat": "18",
       "image": "/images/PanangCurry.webp"
     },
     {
       "name": "Teriyaki Meatballs",
       "calories": 385,
       "price": 12.99,
+      "protein": "28",
+      "carbs": "35",
+      "fat": "18",
       "image": "/images/teriyakiMeatballs.webp"
     }
   ]

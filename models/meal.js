@@ -5,7 +5,11 @@ const mongoose = require('mongoose');
 const mealSchema = new mongoose.Schema({
   name: String,
   calories: Number,
+  protein: Number,
+  carbs: Number,
+  fat: Number,
   price: Number,
+  image: String,
 });
 
 const Meal = mongoose.model('Meal', mealSchema);

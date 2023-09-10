@@ -3,29 +3,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
+    <!-- Ensure you link the same CSS file as in index.ejs -->
 </head>
-<body class="editMeals">
+<body class="content-body">
     <h1>Edit Meals</h1>
+    <select name="mealPlanType">
+        <option value="basic">Basic - 7 Meals</option>
+        <option value="pro">Pro - 10 Meals</option>
+        <option value="gainz">Gainz - 14 Meals</option>
+    </select>
     
     <form action="/cart/edit-meals/<%= mealPlan._id %>" method="post">
         <ul>
             <% allMeals.forEach(meal => { %>
-                <li>
-                    <span><%= meal.name %></span>
-                    <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>" <%= selectedMealsMap[meal._id] ? 'checked' : '' %>>
-                    <label for="<%= meal._id %>"></label>
-
-
-                </li>
+                <div class="meal-card">
+                    <li>
+                        <img src="<%= meal.image %>" alt="<%= meal.name %>">
+                        <div>
+                            <span class="meals"><%= meal.name %></span> <%= meal.calories %> calories
+                            <p><%= meal.description %></p>
+                        </div>
+                        <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>" <%= selectedMealsMap[meal._id] ? 'checked' : '' %>>
+                        <label for="<%= meal._id %>"></label>
+                    </li>
+                </div>
             <% }) %>
         </ul>
 
-        <select name="mealPlanType">
-            <option value="basic">Basic - 7 Meals</option>
-            <option value="pro">Pro - 10 Meals</option>
-            <option value="gainz">Gainz - 14 Meals</option>
-        </select>
         <input type="submit" value="Add to Cart">
     </form>
 </body>
