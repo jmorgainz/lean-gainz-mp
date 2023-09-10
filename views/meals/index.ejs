@@ -5,19 +5,15 @@
 <head>
 </head>
 <body class="content-body">
-    <h1>All Meals</h1>
     
-    <form action="/add-to-cart" method="post">
-        <ul>
-            <select name="mealPlanType">
-                <option value="basic">Basic - 7 Meals</option>
-                <option value="pro">Pro - 10 Meals</option>
-                <option value="gainz">Gainz - 14 Meals</option>
-            </select>
+    
+    <div class="container">
+        <div class="meal-list">
             <% allMeals.forEach(meal => { %>
                 <div class="meal-card">
+                    <img src="<%= meal.image %>" alt="<%= meal.name %>">
+                    
                     <div class="meal-info">
-                        <img src="<%= meal.image %>" alt="<%= meal.name %>">
                         <div>
                             <span class="meals"><%= meal.name %></span>
                         </div>
@@ -33,13 +29,29 @@
                         <label for="<%= meal._id %>"></label>
                     </div>
                 </div>
-                
-                
             <% }) %>
-                <input class="cartBtn" type="submit" value="Add to Cart">
-        </ul>
-    </form>
+        </div>
+        
+        <div class="side-section">
+            <div class="sticky-container">
+                <form action="/add-to-cart" method="post">
+                    <div class="side-actions">
+                        <div class="meal-plan-selection">
+                            <select name="mealPlanType">
+                                <option value="basic">Basic - 7 Meals</option>
+                                <option value="pro">Pro - 10 Meals</option>
+                                <option value="gainz">Gainz - 14 Meals</option>
+                            </select>
+                        </div>
+                        <div class="add-to-cart-button">
+                            <input class="cartBtn" type="submit" value="Add to Cart">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     
+    <%- include('../partials/footer') %>
 </body>
 </html>
-<%- include('../partials/footer') %>
