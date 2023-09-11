@@ -28,10 +28,14 @@ config/: Contains configuration files for the database and authentication.
 public/: Contains public assets like images, JavaScript, and stylesheets.
 views/: Contains EJS templates for rendering the frontend.
 
+Links
+Heroku: https://lean-gainz-meal-prep-ff89a3000376.herokuapp.com/oauth2callback
+Github: https://github.com/jmorgainz/lean-gainz-mp
+
 Visuals
-[Home page:] (https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.42%20AM.png)
-[Meal page:] (https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.06%20AM.png)
-[Cart page:] (https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.31%20AM.png)
+![Home page](https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.42%20AM.png)
+![Meal page:](https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.06%20AM.png)
+![Cart page:](https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.31%20AM.png)
 
 Further implementation
 -User will see a message with how many more meals to select
