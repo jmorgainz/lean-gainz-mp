@@ -29,7 +29,7 @@ public/: Contains public assets like images, JavaScript, and stylesheets.
 views/: Contains EJS templates for rendering the frontend.
 
 Links
-Heroku: https://lean-gainz-meal-prep-ff89a3000376.herokuapp.com/oauth2callback
+Heroku: [https://lean-gainz-meal-prep-ff89a3000376.herokuapp.com/oauth2callback](https://lean-gainz-meal-prep-ff89a3000376.herokuapp.com/)
 Github: https://github.com/jmorgainz/lean-gainz-mp
 
 Visuals
