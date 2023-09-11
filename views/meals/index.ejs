@@ -5,36 +5,11 @@
 <head>
 </head>
 <body class="content-body">
-    
-    
     <div class="container">
-        <div class="meal-list">
-            <% allMeals.forEach(meal => { %>
-                <div class="meal-card">
-                    <img src="<%= meal.image %>" alt="<%= meal.name %>">
-                    
-                    <div class="meal-info">
-                        <div>
-                            <span class="meals"><%= meal.name %></span>
-                        </div>
-                    </div>
-                    <div class="macros">
-                        <div class="macro calories"><%= meal.calories %> cal</div>
-                        <div class="macro protein"><%= meal.protein %>g protein</div>
-                        <div class="macro carbs"><%= meal.carbs %>g carbs</div>
-                        <div class="macro fat"><%= meal.fat %>g fat</div>
-                    </div>
-                    <div class="meal-checkbox">
-                        <input type="checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>">
-                        <label for="<%= meal._id %>"></label>
-                    </div>
-                </div>
-            <% }) %>
-        </div>
-        
-        <div class="side-section">
-            <div class="sticky-container">
-                <form action="/add-to-cart" method="post">
+        <form action="/add-to-cart" method="post">
+            <!-- Side Section (Add to Cart & Meal Plan) -->
+            <div class="side-section">
+                <div class="sticky-container">
                     <div class="side-actions">
                         <div class="meal-plan-selection">
                             <select name="mealPlanType">
@@ -44,12 +19,38 @@
                             </select>
                         </div>
                         <div class="add-to-cart-button">
-                            <input class="cartBtn" type="submit" value="Add to Cart">
+                            <input class="cartBtn styled-button" type="submit" value="Add to Cart">
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <!-- Meal List -->
+            <div class="meal-list">
+                <% allMeals.forEach(meal => { %>
+                    <label for="<%= meal._id %>" class="meal-card-label">
+                        <div class="meal-card">
+                            <img src="<%= meal.image %>" alt="<%= meal.name %>">
+                            <div class="meal-info">
+                                <div>
+                                    <span class="meals"><%= meal.name %></span>
+                                </div>
+                            </div>
+                            <div class="macros">
+                                <div class="macro calories"><%= meal.calories %> cal</div>
+                                <div class="macro protein"><%= meal.protein %>g protein</div>
+                                <div class="macro carbs"><%= meal.carbs %>g carbs</div>
+                                <div class="macro fat"><%= meal.fat %>g fat</div>
+                            </div>
+                            <div class="meal-checkbox">
+                                <input type="checkbox" class="styled-checkbox" id="<%= meal._id %>" name="selectedMeals" value="<%= meal._id %>">
+                                <label for="<%= meal._id %>"></label>
+                            </div>
+                        </div>
+                    </label>
+                <% }) %>
+            </div>
+        </form>
     </div>
     
     <%- include('../partials/footer') %>
