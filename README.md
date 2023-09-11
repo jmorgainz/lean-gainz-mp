@@ -27,3 +27,13 @@ routes/: Defines routes for cart, meals, and users.
 config/: Contains configuration files for the database and authentication.
 public/: Contains public assets like images, JavaScript, and stylesheets.
 views/: Contains EJS templates for rendering the frontend.
+
+Visuals
+[Home page:] (https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.42%20AM.png)
+[Meal page:] (https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.06%20AM.png)
+[Cart page:] (https://github.com/jmorgainz/lean-gainz-mp/blob/main/Screenshot%202023-09-11%20at%209.01.31%20AM.png)
+
+Further implementation
+-User will see a message with how many more meals to select
+-User will be able to actually checkout in the cart
+-User will be able to have a profile with stored information
