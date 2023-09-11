@@ -381,4 +381,7 @@ p {
   line-height: 1.6;
 }
 
+.cart-content {
+  padding-bottom: 80px; /* Adjust this value based on the height of your footer */
+}
 
