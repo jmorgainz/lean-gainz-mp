@@ -23,7 +23,11 @@ router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
     const selectedPlan = mealPlanConfig[mealPlanType];
 
     if (!selectedMeals || !Array.isArray(selectedMeals) || selectedMeals.length < selectedPlan.minMeals || selectedMeals.length > selectedPlan.maxMeals) {
-        // return res.status(400).send(`Please select between ${selectedPlan.minMeals} and ${selectedPlan.maxMeals} meals.`);
+        // Render the EJS page with an error message
+        return res.render('yourEJSPage', {
+            errorMessage: `Please select exactly ${selectedPlan.minMeals} meals for the ${mealPlanType} plan.`,
+            // ... other data you pass to the EJS template
+        });
     }
 
     const mealPlan = await MealPlan.findOne({ plan: mealPlanType });
@@ -68,6 +72,7 @@ router.post('/add-to-cart', ensureLoggedIn, async (req, res) => {
         res.status(500).send('There was a problem adding the meal plan to the cart.');
     }
 });
+
 
 
 

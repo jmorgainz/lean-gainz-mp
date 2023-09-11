@@ -6,7 +6,7 @@
 </head>
 <body class="content-body">
     <div class="container">
-        <form action="/add-to-cart" method="post">
+        <form action="/add-to-cart" method="post" onsubmit="return validateForm()">
             <!-- Side Section (Add to Cart & Meal Plan) -->
             <div class="side-section">
                 <div class="sticky-container">
@@ -52,6 +52,27 @@
             </div>
         </form>
     </div>
+
+    <script>
+        function validateForm() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const mealPlanType = document.querySelector('select[name="mealPlanType"]').value;
+            
+            const mealPlanConfig = {
+                basic: 7,
+                pro: 10,
+                gainz: 14
+            };
+        
+            if (checkboxes.length !== mealPlanConfig[mealPlanType]) {
+                alert(`Please select exactly ${mealPlanConfig[mealPlanType]} meals for the ${mealPlanType} plan.`);
+                return false; // This will prevent the form from being submitted
+            }
+        
+            return true; // This will allow the form to be submitted
+        }
+        </script>
+        
     
     <%- include('../partials/footer') %>
 </body>
